@@ -126,7 +126,7 @@ class uneFichedefrais{
 	}
 
 	//Retourne sous forme d'un tableau associatif toutes les lignes de frais au forfait concernées par les deux arguments
-	public static function getLesFraisForfait($idVisiteur, $mois) {
+	public static function getLesFraisForfait($idVisiteur,$mois) {
 		$req = "select fraisforfait.id as idfrais, fraisforfait.libelle as libelle, 
 		lignefraisforfait.quantite as quantite from lignefraisforfait inner join fraisforfait 
 		on fraisforfait.id = lignefraisforfait.idfraisforfait
@@ -135,6 +135,14 @@ class uneFichedefrais{
 		$res = Database::get_monPdo()->query($req);
 		$lesLignes = $res->fetchAll();
 		return $lesLignes; 
+	}
+
+	//Retourne sous forme d'un tableau associatif toutes les lignes de frais au forfait concernées par les deux arguments
+	public static function getFraisForfait() {
+		$req = "select * from fraisforfait";	
+		$res = Database::get_monPdo()->query($req);
+		$laLigne = $res->fetchAll();
+		return $laLigne;
 	}
 
 	//Met à jour la table ligneFraisForfait pour un visiteur et un mois donné en enregistrant les nouveaux montants
@@ -152,7 +160,7 @@ class uneFichedefrais{
 	//Crée un nouveau frais hors forfait pour un visiteur un mois donné à partir des informations fournies en paramètre
 	public static function creeNouveauFraisHorsForfait($idVisiteur,$mois,$libelle,$date,$montant){
 		$dateFr = dateFrancaisVersAnglais($date);
-		var_dump($dateFr);
+
 		$req = "insert into lignefraishorsforfait 
 		values('','$idVisiteur','$mois','$libelle','$dateFr','$montant')";
 		Database::get_monPdo()->exec($req);
@@ -268,33 +276,6 @@ class uneFichedefrais{
 		$lesLignes = $res->fetchAll();
 		return $lesLignes;
     }
-
-	//faire les deux méthodes pour le classement
-	//il faut calculer le montant avec les quantités
-	//il faut parcourir mes fraisforfait.montant et mes lignefraisforfait.quantite
-	//le SUM me calcule l'ensemble des montants peu importe que la fiche soit liée à un utilisateur
-	//problème au niveau des jointures
-	public static function getLeClassementFraisForfait() {
-		$req="select visiteur.nom as nom, visiteur.prenom as prenom, SUM(fraisforfait.montant * lignefraisforfait.quantite) as 
-		montantrembourse from fraisforfait, lignefraisforfait, fichefrais inner join visiteur where 
-		fichefrais.idVisiteur = lignefraisforfait.idVisiteur and fichefrais.idEtat ='RB' and visiteur.role='v' 
-		group by visiteur.id order by montantrembourse DESC";
-		$res = Database::get_monPdo()->query($req);
-		$lesLignes = $res->fetchAll();
-		return $lesLignes;
-	}
-
-	//méthode pour les frais hors forfait
-	public static function getLeClassementFraisHorsForfait() {
-		$req="select visiteur.nom as nom, visiteur.prenom as prenom, SUM(lignefraishorsforfait.montant) as 
-		montantrembourse from lignefraishorsforfait, fichefrais inner join visiteur where 
-		fichefrais.idVisiteur = lignefraishorsforfait.idVisiteur and fichefrais.idEtat ='RB' and visiteur.role='v' 
-		group by visiteur.id";
-		$res = Database::get_monPdo()->query($req);
-		$lesLignes = $res->fetchAll();
-		return $lesLignes;
-	}
-
 }
 
 ?>

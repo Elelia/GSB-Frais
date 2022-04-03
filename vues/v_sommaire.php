@@ -33,9 +33,6 @@
            <li class="smenu">
               <a href="index.php?uc=suiviFrais&action=selectionnerPaiement" title="Suivi fiches de frais">Suivi des fiches de frais</a>
            </li>
-           <li class="smenu">
-              <a href="index.php?uc=classement&action=classement" title="Affichage des classements">Affichage des classements</a>
-           </li>
  	   <li class="smenu">
               <a href="index.php?uc=deconnexion" title="Se déconnecter">Déconnexion</a>
            </li>

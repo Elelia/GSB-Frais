@@ -1,15 +1,16 @@
 <?php 
 //collection des lignes frais forfait
 class ligneFraisForfait {
+
     private $idVisiteur;
     private $mois;
     private $idFraisForfait;
     private $quantite;
 
-    public function _construct($unIdVisiteur,$unMois,$unIdFraisForfait,$uneQuantite) {
+    public function __construct($unIdVisiteur,$unMois,$unIdFraisForfait,$uneQuantite) {
         $this->idVisiteur=$unIdVisiteur;
         $this->mois=$unMois;
-        $this->id=$unIdFraisForfait;
+        $this->idFraisForfait=$unIdFraisForfait;
         $this->quantite=$uneQuantite;
     }
 
@@ -22,7 +23,7 @@ class ligneFraisForfait {
     }
 
     public function get_idFraisForfaitLigne() {
-        return $this->idFraiForfaitLigne;
+        return $this->idFraisForfait;
     }
 
     public function get_quantiteLigneFraisForfait() {

@@ -3,7 +3,7 @@
     </h3>
     <div class="encadre">
     <p>
-        Etat : <?php echo $libEtat?> depuis le <?php echo $dateModif?> <br> Montant validé : <?php echo $montantValide?>
+        Etat : <?php echo $libEtat?> depuis le <?php echo $dateModif?> <br> Montant validé : <?php echo $montantValide?>€
               
                      
     </p>
@@ -13,7 +13,7 @@
   	   <caption>Eléments forfaitisés </caption>
         <tr>
          <?php
-         foreach ( $lesFraisForfait as $unFraisForfait ) 
+         foreach($lesFraisForfait as $unFraisForfait) 
 		 {
       $idFrais = $unFraisForfait['idfrais'];
 			$libelle = $unFraisForfait['libelle'];
@@ -25,7 +25,7 @@
 		</tr>
         <tr>
         <?php
-          foreach (  $lesFraisForfait as $unFraisForfait  ) 
+          foreach($lesFraisForfait as $unFraisForfait)
 		  {
         $idFrais = $unFraisForfait['idfrais'];
 				$quantite = $unFraisForfait['quantite'];

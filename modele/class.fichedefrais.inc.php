@@ -8,9 +8,9 @@ class Fichedefrais
     private $montantValide;
     private $dateModif;
     private $idEtat;
-    private $fraisForfait;
-    private $lesFraisF;
-    private $lesFraisHorsF;
+    private $fraisForfait=array();
+    private $lesFraisF=array();
+    private $lesFraisHorsF=array();
 
     public function __construct($unIdVisiteur,$unMois,$unNbJustificatifs,$unMontantValide,$uneDateModif,$unIdEtat) {
         $this->idVisiteur=$unIdVisiteur;

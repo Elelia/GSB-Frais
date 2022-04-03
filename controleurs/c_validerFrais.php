@@ -43,58 +43,66 @@ switch($action) {
         $date=substr(date("Ymd"),0,6);
         $lesMois=uneFichedefrais::getLesMoisDisponiblesComptable($date);
 		$moisASelectionner = $leMois;
-        var_dump($leMois);
         $leVisiteur = $_REQUEST['lstVisiteur'];
         $role="v";
         $lesVisiteurs=unePersonne::getVisiteurByRole($role);
         $visiteurASelectionner=$leVisiteur;
         $idV=unePersonne::get_IdVisiteurByNom($leVisiteur);
         $idVisiteur=implode("",$idV);
-        var_dump($idVisiteur);
         include("vues/v_listeAValider.php");
 
-        $lesFraisHorsForfait = uneFichedefrais::getLesFraisHorsForfait($idVisiteur,$leMois);
-		$lesFraisForfait= uneFichedefrais::getLesFraisForfait($idVisiteur,$leMois);
-        var_dump($lesFraisForfait);
-		$lesInfosFicheFrais = uneFichedefrais::getLesInfosFraisValide($idVisiteur,$leMois);
-        //j'essaye de faire un tableau d'objet ligneFraisForfait mais j'ai que des valeurs null
-        $tabLesFraisForfait = new arrayObject();
-        foreach($lesFraisForfait as $unFraisForfait) {
-            $tabLesFraisForfait->append(new ligneFraisForfait($idVisiteur,$leMois,$unFraisForfait["idfrais"],$unFraisForfait["quantite"]));
-        }
-        var_dump($tabLesFraisForfait);
-        //création de l'objet fiche de frais
-        $tabLesInfosFichesFrais=new arrayObject();
-        $tabLesInfosFichesFrais->append(new Fichedefrais($lesInfosFicheFrais["idVisiteur"],$lesInfosFicheFrais["mois"],$lesInfosFicheFrais["idEtat"],$lesInfosFicheFrais["dateModif"],$lesInfosFicheFrais["nbJustificatifs"],$lesInfosFicheFrais["montantValide"],$lesInfosFicheFrais["libEtat"]));
-        var_dump($tabLesInfosFichesFrais);
+        $lesInfosFicheFrais = uneFichedefrais::getLesInfosFraisValide($idVisiteur,$leMois);
         if ($lesInfosFicheFrais == null) {
             echo "Il n'y a pas de fiche clôturé pour le visiteur et le mois sélectionné.";
         }
         else {
-		$numAnnee =substr( $leMois,0,4);
-		$numMois =substr( $leMois,4,2);
-        //je récupère les quantités et l'id
-        $lesQuantites = uneFichedefrais::getLesQuantites($idVisiteur,$leMois);
-        var_dump($lesQuantites);
-        //je récupère les montants et l'id
-        $lesMontants = uneFichedefrais::getLesIdMontantFrais();
-        var_dump($lesMontants);
-        //et ici je parcours mes deux tableaux et je calcul en fonction de l'id
-        //mais faut que mes deux tableaux soient en objet pour faire mes get dessus
-        $montantTotalValide=0;
-        /*for($i=0;count($lesQuantites);$i++) {
-            for($j=0;count($lesMontants);$j++) {
-                if($lesQuantites)
+            $numAnnee =substr( $leMois,0,4);
+            $numMois =substr( $leMois,4,2);
+            //tableau object ligne frais hors forfait
+            $lesFraisHorsForfait = uneFichedefrais::getLesFraisHorsForfait($idVisiteur,$leMois);
+            $tabLesFraisHorsForfait = new arrayObject();
+            foreach($lesFraisHorsForfait as $unFraisHorsForfait) {
+                $tabLesFraisHorsForfait->append(new ligneFraisHorsForfait($unFraisHorsForfait["id"],$unFraisHorsForfait["idVisiteur"],$unFraisHorsForfait["mois"],$unFraisHorsForfait["date"],$unFraisHorsForfait["libelle"],$unFraisHorsForfait["montant"]));
             }
-        }*/
-        //faudrait que je puisse multiplier une quantité par le montant de fichefrais mais je dois parcourir les deux
-        //Quantité (lignefraisfortait) * montant (fraisfortait) lié à l'id fraisforfait
-        $libEtat = $lesInfosFicheFrais['libEtat'];
-		$montantValide = $lesInfosFicheFrais['montantValide'];
-		$nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
-		$dateModif =  $lesInfosFicheFrais['dateModif'];
-		$dateModif =  dateAnglaisVersFrancais($dateModif);
-        include("vues/v_editionFrais.php");
+            var_dump($tabLesFraisHorsForfait);
+            $lesFraisForfait= uneFichedefrais::getLesFraisForfait($idVisiteur,$leMois);
+            //tableau d'objet de ligne forfait
+            $tabLesFraisForfait = new arrayObject();
+            foreach($lesFraisForfait as $unFraisForfait) {
+                $tabLesFraisForfait->append(new ligneFraisForfait($idVisiteur,$leMois,$unFraisForfait["idfrais"],$unFraisForfait["quantite"]));
+            }
+            var_dump($tabLesFraisForfait);
+            //tableau object frais forfait
+            $FraisForfait = uneFichedefrais::getFraisForfait();
+            $tabLeFraisForfait = new arrayObject();
+            foreach($FraisForfait as $leFrais) {
+                $tabLeFraisForfait->append(new FraisForfait($leFrais["id"],$leFrais["libelle"],$leFrais["montant"]));
+            }
+            var_dump($tabLeFraisForfait);
+            //je récupère les quantités et l'id
+            $tabLesQuantites = new arrayObject();
+            $montantValide = 0;
+            foreach($tabLesFraisForfait as $laQuantite) {
+                foreach($tabLeFraisForfait as $leMontant) {
+                    if($leMontant->get_idFraisForfait() == $laQuantite->get_idFraisForfaitLigne()) {
+                        $newQuantite = $leMontant->get_montantFraisForfait() * $laQuantite->get_quantiteLigneFraisForfait();
+                        $montantValide += $montantValide + $newQuantite;
+                        $tabLesQuantites->append($newQuantite);
+                    }
+                }
+            }
+            var_dump($tabLesQuantites);
+            //création de l'objet fiche de frais
+            //il manque les collections du coup à voir
+            $tabLaFichesDeFrais=new arrayObject();
+            $tabLaFichesDeFrais->append(new Fichedefrais($lesInfosFicheFrais["idVisiteur"],$lesInfosFicheFrais["mois"],$lesInfosFicheFrais["nbJustificatifs"],$montantValide,$lesInfosFicheFrais["dateModif"],$lesInfosFicheFrais["idEtat"],$tabLeFraisForfait,$tabLesFraisForfait,$tabLesFraisHorsForfait));
+            var_dump($tabLaFichesDeFrais);
+            //j'ai donc mes quantités * le montant dans un tableau d'objet
+            $libEtat = $lesInfosFicheFrais['libEtat'];
+            $nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
+            $dateModif =  $lesInfosFicheFrais['dateModif'];
+            $dateModif =  dateAnglaisVersFrancais($dateModif);
+            include("vues/v_editionFrais.php");
         }
         break;
     }
