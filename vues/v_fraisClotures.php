@@ -11,9 +11,9 @@
   	   <caption>Eléments forfaitisés </caption>
         <tr>
          <?php
-         foreach ( $lesFraisForfait as $unFraisForfait ) 
+         foreach ( $tabLeFraisForfait as $unFraisForfait ) 
 		 {
-			$libelle = $unFraisForfait['libelle'];
+			$libelle = $unFraisForfait->get_libelleFraisForfait();
 		?>	
 			<th> <?php echo $libelle?></th>
 		 <?php
@@ -22,9 +22,9 @@
 		</tr>
         <tr>
         <?php
-          foreach (  $lesFraisForfait as $unFraisForfait  ) 
+          foreach (  $tabLesFraisForfait as $unFraisForfait  ) 
 		  {
-				$quantite = $unFraisForfait['quantite'];
+				$quantite = $unFraisForfait->get_quantiteLigneFraisForfait();
 		?>
                 <td class="qteForfait"><?php echo $quantite?> </td>
 		 <?php

@@ -14,7 +14,7 @@ class Database
 		Database::$monPdo->query("SET CHARACTER SET utf8");
 	}
 
-	public function _destruct()
+	public function __destruct()
     {
 		Database::$monPdo = null;
 	}

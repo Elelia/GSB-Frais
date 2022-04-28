@@ -28,7 +28,6 @@ class uneFichedefrais{
 		$laDerniereFiche = self::getLesInfosFicheFrais($idVisiteur,$dernierMois);
 		if($laDerniereFiche['idEtat']=='CR'){
 				self::majEtatFicheFrais($idVisiteur, $dernierMois,'CL');
-				
 		}
 		$req = "insert into fichefrais(idvisiteur,mois,nbJustificatifs,montantValide,dateModif,idEtat) 
 		values('$idVisiteur','$mois',0,0,now(),'CR')";
@@ -39,7 +38,14 @@ class uneFichedefrais{
 			$req = "insert into lignefraisforfait(idvisiteur,mois,idFraisForfait,quantite) 
 			values('$idVisiteur','$mois','$unIdFrais',0)";
 			Database::get_monPdo()->exec($req);
-		 }
+		}
+	}
+
+	public static function getLesIdFrais() {
+		$req = "select fraisforfait.id as idfrais from fraisforfait order by fraisforfait.id";
+		$res = Database::get_monPdo()->query($req);
+		$lesLignes = $res->fetchAll();
+		return $lesLignes;
 	}
 
 	//Retourne les mois pour lesquels un visiteur a une fiche de frais
@@ -158,11 +164,9 @@ class uneFichedefrais{
 	}
 
 	//Crée un nouveau frais hors forfait pour un visiteur un mois donné à partir des informations fournies en paramètre
-	public static function creeNouveauFraisHorsForfait($idVisiteur,$mois,$libelle,$date,$montant){
+	public static function creeNouveauFraisHorsForfait($idVisiteur,$mois,$libelle,$date,$montant) {
 		$dateFr = dateFrancaisVersAnglais($date);
-
-		$req = "insert into lignefraishorsforfait 
-		values('','$idVisiteur','$mois','$libelle','$dateFr','$montant')";
+		$req = "insert into lignefraishorsforfait (idVisiteur, mois, libelle, date, montant)  values('$idVisiteur','$mois','$libelle','$dateFr','$montant')";
 		Database::get_monPdo()->exec($req);
 	}
 
@@ -225,10 +229,6 @@ class uneFichedefrais{
 
 	//met à jour l'état d'une fiche de frais
 	public static function majEtatFicheFrais($idVisiteur,$mois,$etat) {
-		//ici faudrait que je fasse un if pour l'état, comme ça pas besoin de le rentrer
-		//faudrait que je puisse faire des get de l'état de mon objet pour connaître l'état actuel et modifier en conséquence du coup ?
-		//$etat = "select idEtat from ficheFrais where fichefrais.idvisiteur ='$idVisiteur' and fichefrais.mois = '$mois'"
-		//Database::$monPdo->exec($etat);
 		$req = "update ficheFrais set idEtat = '$etat', dateModif = now() 
 		where fichefrais.idvisiteur ='$idVisiteur' and fichefrais.mois = '$mois'";
 		Database::get_monPdo()->exec($req);

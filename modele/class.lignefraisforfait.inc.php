@@ -18,7 +18,7 @@ class ligneFraisForfait {
         return $this->idVisiteur;
     }
 
-    public function get_moiLigneFraisForfait() {
+    public function get_moisLigneFraisForfait() {
         return $this->mois;
     }
 
@@ -28,6 +28,18 @@ class ligneFraisForfait {
 
     public function get_quantiteLigneFraisForfait() {
         return $this->quantite;
+    }
+
+    public function set_idVisiteurLigneFraisForfait($unIdVisiteur) {
+        $this->idVisiteur=$unIdVisiteur;
+    }
+
+    public function set_moisLigneFraisForfait($unMois) {
+        $this->mois=$unMois;
+    }
+
+    public function set_idFraisForfaitLigne($unIdFraisForfait) {
+        $this->idFraisForfait=$unIdFraisForfait;
     }
 }
 

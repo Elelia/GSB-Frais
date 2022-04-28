@@ -19,8 +19,8 @@ $visiteur = unePersonne::getInfosVisiteur($login,$mdp);
 include("vues/v_sommaire.php");
 $idVisiteur = $utilisateur->get_id();
 $mois = getMois(date("d/m/Y"));
-$numAnnee =substr( $mois,0,4);
-$numMois =substr( $mois,4,2);
+$numAnnee =substr($mois,0,4);
+$numMois =substr($mois,4,2);
 $action = $_REQUEST['action'];
 
 //a chaque fiche créer le ranger dans la bonne collection
@@ -52,13 +52,6 @@ switch($action){
 		}
 		else {
 			uneFichedefrais::creeNouveauFraisHorsForfait($idVisiteur,$mois,$libelle,$dateFrais,$montant);
-			var_dump($libelle);
-			var_dump($dateFrais);
-			var_dump($montant);
-			var_dump($idVisiteur);
-			var_dump($mois);
-			//donc mes variables sont bien récupérée mais rien n'est crée en base de donnée
-			//non mais y a tout je comprend pas pourquoi ça marche pas pour le coup zzzzz
 		}
 		break;
 	}
@@ -70,7 +63,6 @@ switch($action){
 }
 $lesFraisHorsForfait = uneFichedefrais::getLesFraisHorsForfait($idVisiteur,$mois);
 $lesFraisForfait= uneFichedefrais::getLesFraisForfait($idVisiteur,$mois); //ici c'est les tableaux en gros
-//ce serait donc mes collections d'objet ?
 include("vues/v_listeFraisForfait.php");
 include("vues/v_listeFraisHorsForfait.php");
 ?>

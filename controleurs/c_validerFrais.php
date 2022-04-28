@@ -26,7 +26,6 @@ switch($action) {
         foreach($lesVisiteurs as $unVisiteur) {
             $tabLesVisiteurs->append(new Personne($unVisiteur["id"],$unVisiteur["nom"],$unVisiteur["prenom"],$unVisiteur['login'], $unVisiteur['mdp'], $unVisiteur["role"]));
         }
-        var_dump($tabLesVisiteurs);
         $lesCles=array_keys($lesVisiteurs);
         $clesVi=array_keys((array)$tabLesVisiteurs);
         $visiteurASelectionner=$clesVi[0];
@@ -53,7 +52,7 @@ switch($action) {
 
         $lesInfosFicheFrais = uneFichedefrais::getLesInfosFraisValide($idVisiteur,$leMois);
         if ($lesInfosFicheFrais == null) {
-            echo "Il n'y a pas de fiche clôturé pour le visiteur et le mois sélectionné.";
+            echo "Il n'y a pas de fiche clôturée pour le visiteur et le mois sélectionnés.";
         }
         else {
             $numAnnee =substr( $leMois,0,4);
@@ -64,21 +63,18 @@ switch($action) {
             foreach($lesFraisHorsForfait as $unFraisHorsForfait) {
                 $tabLesFraisHorsForfait->append(new ligneFraisHorsForfait($unFraisHorsForfait["id"],$unFraisHorsForfait["idVisiteur"],$unFraisHorsForfait["mois"],$unFraisHorsForfait["date"],$unFraisHorsForfait["libelle"],$unFraisHorsForfait["montant"]));
             }
-            var_dump($tabLesFraisHorsForfait);
             $lesFraisForfait= uneFichedefrais::getLesFraisForfait($idVisiteur,$leMois);
             //tableau d'objet de ligne forfait
             $tabLesFraisForfait = new arrayObject();
             foreach($lesFraisForfait as $unFraisForfait) {
                 $tabLesFraisForfait->append(new ligneFraisForfait($idVisiteur,$leMois,$unFraisForfait["idfrais"],$unFraisForfait["quantite"]));
             }
-            var_dump($tabLesFraisForfait);
             //tableau object frais forfait
             $FraisForfait = uneFichedefrais::getFraisForfait();
             $tabLeFraisForfait = new arrayObject();
             foreach($FraisForfait as $leFrais) {
                 $tabLeFraisForfait->append(new FraisForfait($leFrais["id"],$leFrais["libelle"],$leFrais["montant"]));
             }
-            var_dump($tabLeFraisForfait);
             //je récupère les quantités et l'id
             $tabLesQuantites = new arrayObject();
             $montantValide = 0;
@@ -91,13 +87,14 @@ switch($action) {
                     }
                 }
             }
-            var_dump($tabLesQuantites);
+            //j'ai donc mes quantités * le montant dans un tableau d'objet
             //création de l'objet fiche de frais
             //il manque les collections du coup à voir
             $tabLaFichesDeFrais=new arrayObject();
             $tabLaFichesDeFrais->append(new Fichedefrais($lesInfosFicheFrais["idVisiteur"],$lesInfosFicheFrais["mois"],$lesInfosFicheFrais["nbJustificatifs"],$montantValide,$lesInfosFicheFrais["dateModif"],$lesInfosFicheFrais["idEtat"],$tabLeFraisForfait,$tabLesFraisForfait,$tabLesFraisHorsForfait));
-            var_dump($tabLaFichesDeFrais);
-            //j'ai donc mes quantités * le montant dans un tableau d'objet
+            //je stock mes objets dans ma variable SESSION
+            $_SESSION['laFiche'] = $tabLesFraisForfait;
+            $_SESSION['leFrais'] = $tabLeFraisForfait;
             $libEtat = $lesInfosFicheFrais['libEtat'];
             $nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
             $dateModif =  $lesInfosFicheFrais['dateModif'];
@@ -111,6 +108,11 @@ switch($action) {
         $idVisiteur=$_REQUEST['idVisiteur'];
         $mois=$_REQUEST['leMois'];
         $lesFrais = $_REQUEST['lesFrais'];
+        $tabLesFraisForfait = $_SESSION['laFiche'];
+        $tabLeFraisForfait = $_SESSION['leFrais'];
+        var_dump($tabLesFraisForfait);
+        var_dump($tabLeFraisForfait);
+        var_dump($lesFrais);
 		if(lesQteFraisValides($lesFrais)) {
 			uneFichedefrais::majFraisForfait($idVisiteur,$mois,$lesFrais);
             echo 'La fiche de frais a bien été modifiée';

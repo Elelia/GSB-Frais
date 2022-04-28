@@ -13,10 +13,10 @@
   	   <caption>Eléments forfaitisés </caption>
         <tr>
          <?php
-         foreach($lesFraisForfait as $unFraisForfait) 
+         foreach($tabLeFraisForfait as $unFraisForfait) 
 		 {
-      $idFrais = $unFraisForfait['idfrais'];
-			$libelle = $unFraisForfait['libelle'];
+      $idFrais = $unFraisForfait->get_idFraisForfait();
+			$libelle = $unFraisForfait->get_libelleFraisForfait();
 		?>	
 			<th> <?php echo $libelle?></th>
 		 <?php
@@ -25,10 +25,10 @@
 		</tr>
         <tr>
         <?php
-          foreach($lesFraisForfait as $unFraisForfait)
+          foreach($tabLesFraisForfait as $unFraisForfait)
 		  {
-        $idFrais = $unFraisForfait['idfrais'];
-				$quantite = $unFraisForfait['quantite'];
+        $idFrais = $unFraisForfait->get_idFraisForfaitLigne();
+				$quantite = $unFraisForfait->get_quantiteLigneFraisForfait();
 		?>
       <input id="id" name="idVisiteur" type="hidden" value="<?php echo $idVisiteur ?>">
       <input id="mois" name="leMois" type="hidden" value="<?php echo $leMois ?>">

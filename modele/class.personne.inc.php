@@ -47,6 +47,30 @@ class Personne
     {
         return $this->role;
     }
+
+    public function set_id($unId) {
+        $this->id=$unId;
+    }
+
+    public function set_nom($unNom) {
+        $this->nom=$unNom;
+    }
+
+    public function set_prenom($unPrenom) {
+        $this->prenom=$unPrenom;
+    }
+
+    public function set_login($unLogin) {
+        $this->login=$unLogin;
+    }
+
+    public function set_mdp($unMdp) {
+        $this->mdp=$unMpd;
+    }
+
+    public function set_role($unRole) {
+        $this->role=$unRole;
+    }
 }
 
 

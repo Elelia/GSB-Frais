@@ -23,6 +23,18 @@ class FraisForfait {
         return $this->montant;
     }
 
+    public function set_idFraisForfait($unId) {
+        $this->id=$unId;
+    }
+
+    public function set_libelleFraisForfait($unLibelle) {
+        $this->libelle=$unLibelle;
+    }
+
+    public function set_montantFraisForfait($unMontant) {
+        $this->montant=$unMontant;
+    }
+
 }
 
 ?>

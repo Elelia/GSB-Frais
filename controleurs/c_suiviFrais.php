@@ -38,17 +38,41 @@ switch($action) {
 		$lesMoisClotures=uneFichedefrais::getMoisEtVisiteursValides();
 		$moisASelectionner = $leVisiteur;
 		$leMois=substr($leVisiteur,0,6);
-		$lId=substr($leVisiteur,6);
+		$idVisiteur=substr($leVisiteur,6);
 		include("vues/v_listePaiement.php");
 
 		//on récupère les données pour afficher la fiche
-		$lesFraisForfait=uneFichedefrais::getLesFraisForfait($lId,$leMois);
-		$lesFraisHorsForfait = uneFichedefrais::getLesFraisHorsForfait($lId,$leMois);
-		$lesInfosFicheFrais = uneFichedefrais::getLesInfosFicheFrais($lId,$leMois);
+		$lesFraisForfait=uneFichedefrais::getLesFraisForfait($idVisiteur,$leMois);
+		$tabLesFraisForfait = new arrayObject();
+        foreach($lesFraisForfait as $unFraisForfait) {
+            $tabLesFraisForfait->append(new ligneFraisForfait($idVisiteur,$leMois,$unFraisForfait["idfrais"],$unFraisForfait["quantite"]));
+        }
+		$lesFraisHorsForfait = uneFichedefrais::getLesFraisHorsForfait($idVisiteur,$leMois);
+		$tabLesFraisHorsForfait = new arrayObject();
+        foreach($lesFraisHorsForfait as $unFraisHorsForfait) {
+            $tabLesFraisHorsForfait->append(new ligneFraisHorsForfait($unFraisHorsForfait["id"],$unFraisHorsForfait["idVisiteur"],$unFraisHorsForfait["mois"],$unFraisHorsForfait["date"],$unFraisHorsForfait["libelle"],$unFraisHorsForfait["montant"]));
+        }
+		$FraisForfait = uneFichedefrais::getFraisForfait();
+        $tabLeFraisForfait = new arrayObject();
+        foreach($FraisForfait as $leFrais) {
+            $tabLeFraisForfait->append(new FraisForfait($leFrais["id"],$leFrais["libelle"],$leFrais["montant"]));
+        }
+		$lesInfosFicheFrais = uneFichedefrais::getLesInfosFicheFrais($idVisiteur,$leMois);
+		$tabLesQuantites = new arrayObject();
+        $montantValide = 0;
+        foreach($tabLesFraisForfait as $laQuantite) {
+            foreach($tabLeFraisForfait as $leMontant) {
+                if($leMontant->get_idFraisForfait() == $laQuantite->get_idFraisForfaitLigne()) {
+                    $newQuantite = $leMontant->get_montantFraisForfait() * $laQuantite->get_quantiteLigneFraisForfait();
+                    $montantValide += $montantValide + $newQuantite;
+                    $tabLesQuantites->append($newQuantite);
+                }
+            }
+        }
+
 		$numAnnee =substr( $leMois,0,4);
 		$numMois =substr( $leMois,4,2);
 		$libEtat = $lesInfosFicheFrais['libEtat'];
-		$montantValide = $lesInfosFicheFrais['montantValide'];
 		$nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
 		$dateModif =  $lesInfosFicheFrais['dateModif'];
 		$dateModif =  dateAnglaisVersFrancais($dateModif);

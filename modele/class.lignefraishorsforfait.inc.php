@@ -25,7 +25,7 @@ class ligneFraisHorsForfait {
         return $this->idVisiteur;
     }
 
-    public function get_moiFraisHorsForfait() {
+    public function get_moisFraisHorsForfait() {
         return $this->mois;
     }
 
@@ -39,6 +39,30 @@ class ligneFraisHorsForfait {
 
     public function get_montantFraisHorsForfait() {
         return $this->montant;
+    }
+
+    public function set_idFraisHorsForfait($unId) {
+        $this->id=$unId;
+    }
+
+    public function set_idVisiteurFraisHorsForfait($unIdVisiteur) {
+        $this->idVisiteur=$unIdVisiteur;
+    }
+
+    public function set_moisFraisHorsForfait($unMois) {
+        $this->mois=$unMois;
+    }
+
+    public function set_dateFraisHorsForfait($uneDate) {
+        $this->date=$uneDate;
+    }
+
+    public function set_libelleFraisHorsForfait($unLibelle) {
+        $this->libelle=$unLibelle;
+    }
+
+    public function set_montantFraisHorsForfait($unMontant) {
+        $this->montant=$unMontant;
     }
 
     

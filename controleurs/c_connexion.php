@@ -1,5 +1,5 @@
 ﻿<?php
-require_once ("modele/class.database.inc.php");
+require_once("modele/class.database.inc.php");
 require_once("modele/class.unePersonne.inc.php");
 require_once("modele/class.personne.inc.php");
 
