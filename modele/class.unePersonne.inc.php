@@ -93,7 +93,7 @@ class unePersonne
     public static function get_IdVisiteurByNom($unNom) {
         try {
             $cnx = Database::get_monPdo();
-            $req = $cnx->prepare("select id from visiteur where nom like :nom");
+            $req = $cnx->prepare("select * from visiteur where nom like :nom");
             $req->bindValue(':nom', $unNom, PDO::PARAM_STR);
 
             $req->execute();

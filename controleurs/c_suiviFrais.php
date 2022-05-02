@@ -81,10 +81,11 @@ switch($action) {
 	}
 	case 'passerFicheEnRembourse': {
 		//on modofie l'état de la fiche pour la passer en rembourser
+		//faire comme avec l'état en validerFrais ez
 		$leVisiteur=$_REQUEST['idVisiteur'];
 		$leMois=$_REQUEST['moisFiche'];
-		$lEtat='RB';
-		uneFichedefrais::majEtatFicheFrais($leVisiteur,$leMois,$lEtat);
+		$etat='RB';
+		uneFichedefrais::majEtatFicheFrais($leVisiteur,$leMois,$etat);
 		echo 'Le paiement a été effectué, bravo !';
 
 		//On récupère les données pour afficher le menu déroulant
@@ -95,6 +96,5 @@ switch($action) {
 		break;
 	}
 }
-
 
 ?>

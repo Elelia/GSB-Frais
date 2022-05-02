@@ -41,6 +41,10 @@ class ligneFraisForfait {
     public function set_idFraisForfaitLigne($unIdFraisForfait) {
         $this->idFraisForfait=$unIdFraisForfait;
     }
+
+    public function set_quantiteLigneFraisForfait($uneQuantite) {
+        $this->quantite=$uneQuantite;
+    }
 }
 
 

@@ -1,10 +1,11 @@
 <?php
 class Database
 {
-    private static $serveur='mysql:host=localhost';
-    private static $bdd='dbname=gsb_frais';   		
-    private static $user='root' ;    		
-    private static $mdp='' ;	
+	private static $serveur='mysql:host=localhost';
+    //private static $serveur='mysql:host=192.168.0.15';
+    private static $bdd='dbname=gsb_fraislisa';   		
+    private static $user='gsb';    		
+    private static $mdp='verT22+sLam10';	
 	private static $monPdo;
     private static $monPdoGsb=null;
 

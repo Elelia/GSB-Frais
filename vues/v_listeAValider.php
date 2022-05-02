@@ -8,10 +8,10 @@
         <label for="lstVisiteur" accesskey="n">Visiteur : </label>
         <select id="lstVisiteur" name="lstVisiteur">
             <?php
-			foreach ($lesVisiteurs as $value)
+			foreach ($tabLesVisiteurs as $value)
 			{
-				$nom =  $value['nom'];
-				$prenom =  $value['prenom'];
+				$nom =  $value->get_nom();
+				$prenom =  $value->get_prenom();
 				if($nom == $visiteurASelectionner) {
 				?>
 				<option selected value="<?php echo $nom ?>"><?php echo  $nom." ".$prenom ?> </option>

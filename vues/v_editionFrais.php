@@ -7,7 +7,6 @@
               
                      
     </p>
-    <!-- <form id="validerFrais" method="POST" action="index.php?uc=validerFrais&action=validerFichefrais"> -->
     <form id="majFrais" method="POST" action="index.php?uc=validerFrais&action=modifierFichefrais">
   	<table class="listeLegere">
   	   <caption>Eléments forfaitisés </caption>
@@ -56,12 +55,12 @@
                 <th class='action' colspan="2">Action</th>                
              </tr>
         <?php      
-          foreach ( $lesFraisHorsForfait as $unFraisHorsForfait ) 
+          foreach ( $tabLesFraisHorsForfait as $unFraisHorsForfait ) 
 		  {
-			$date = $unFraisHorsForfait['date'];
-			$libelle = $unFraisHorsForfait['libelle'];
-			$montant = $unFraisHorsForfait['montant'];
-      $id = $unFraisHorsForfait['id'];
+			$date = $unFraisHorsForfait->get_dateFraisHorsForfait();
+			$libelle = $unFraisHorsForfait->get_libelleFraisHorsForfait();
+			$montant = $unFraisHorsForfait->get_montantFraisHorsForfait();
+      $id = $unFraisHorsForfait->get_idFraisHorsForfait();
       if(strpos($libelle,'REFUSE') !== false) { 
         ?>
              <tr style="background-color:#980101">

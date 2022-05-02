@@ -217,7 +217,7 @@ class uneFichedefrais{
 		return $laLigne;
 	}
 
-	//me faut une fonction qui retourne la fiche de frais pour l'idvisiteur et le mois sélectionné et avec l'état validé
+	//me faut une fonction qui retourne la fiche de frais pour l'idvisiteur et le mois sélectionné et avec l'état clôturé
 	public static function getLesInfosFraisValide($idVisiteur,$mois) {
 		$req = "select ficheFrais.idVisiteur as idVisiteur, ficheFrais.mois as mois, ficheFrais.idEtat as idEtat, ficheFrais.dateModif as dateModif, ficheFrais.nbJustificatifs as nbJustificatifs, 
 			ficheFrais.montantValide as montantValide, etat.libelle as libEtat from  fichefrais inner join Etat on ficheFrais.idEtat = Etat.id 
