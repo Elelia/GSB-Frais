@@ -34,11 +34,14 @@ switch($action) {
 	}
 	case 'voirFraisCloture': {
 		//On récupère les données pour afficher le menu déroulant
-		$leVisiteur=$_REQUEST['lstPaiement'];
+		$visiteurSelect=$_REQUEST['lstPaiement'];
+		$lidVisiteur=substr($visiteurSelect,6);
+		$infosVisiteur = unePersonne::getVisiteurById($lidVisiteur);
+		$leVisiteur = new Personne($infosVisiteur['id'],$infosVisiteur['nom'],$infosVisiteur['prenom'],$infosVisiteur['login'],$infosVisiteur['mdp'],$infosVisiteur['role']);
+		$idVisiteur = $leVisiteur->get_id();
 		$lesMoisClotures=uneFichedefrais::getMoisEtVisiteursValides();
 		$moisASelectionner = $leVisiteur;
-		$leMois=substr($leVisiteur,0,6);
-		$idVisiteur=substr($leVisiteur,6);
+		$leMois=substr($visiteurSelect,0,6);
 		include("vues/v_listePaiement.php");
 
 		//on récupère les données pour afficher la fiche
@@ -70,29 +73,42 @@ switch($action) {
             }
         }
 
+		$laFicheDeFrais=new Fichedefrais($lesInfosFicheFrais["idVisiteur"],$lesInfosFicheFrais["mois"],$lesInfosFicheFrais["nbJustificatifs"],$montantValide,$lesInfosFicheFrais["dateModif"],$lesInfosFicheFrais["idEtat"]);
+
 		$numAnnee =substr( $leMois,0,4);
 		$numMois =substr( $leMois,4,2);
 		$libEtat = $lesInfosFicheFrais['libEtat'];
-		$nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
-		$dateModif =  $lesInfosFicheFrais['dateModif'];
-		$dateModif =  dateAnglaisVersFrancais($dateModif);
+        $montantValide = $laFicheDeFrais->get_montantValideFiche();
+        $nbJustificatifs = $laFicheDeFrais->get_nbJustificatifsFiche();
+        $dateModif =  $laFicheDeFrais->get_dateModifFiche();
+
+		$_SESSION['lesFrais'] = $tabLesFraisForfait;
+        $_SESSION['fraisHorsForfait'] = $tabLesFraisHorsForfait;
+        $_SESSION['leFrais'] = $tabLeFraisForfait;
+        $_SESSION['laFiche'] = $laFicheDeFrais;
+        $_SESSION['leVisiteur'] = $leVisiteur;
 		include("vues/v_fraisClotures.php");
 		break;
 	}
 	case 'passerFicheEnRembourse': {
-		//on modofie l'état de la fiche pour la passer en rembourser
-		//faire comme avec l'état en validerFrais ez
-		$leVisiteur=$_REQUEST['idVisiteur'];
+		//on modifie l'état de la fiche pour la passer en rembourser
+		$leVisiteur=$_SESSION['leVisiteur'];
+		$idVisiteur = $leVisiteur->get_id();
 		$leMois=$_REQUEST['moisFiche'];
 		$etat='RB';
-		uneFichedefrais::majEtatFicheFrais($leVisiteur,$leMois,$etat);
+		uneFichedefrais::majEtatFicheFrais($idVisiteur,$leMois,$etat);
 		echo 'Le paiement a été effectué, bravo !';
 
 		//On récupère les données pour afficher le menu déroulant
 		$lesMoisClotures=uneFichedefrais::getMoisEtVisiteursValides();
-		$lesCles = array_keys($lesMoisClotures);
-		$moisASelectionner = $lesCles[0];
-		include("vues/v_listePaiement.php");
+		if($lesMoisClotures==null) {
+			echo("Aucune fiche de frais n'est disponible à la mise en paiement");
+		}
+		else {
+			$lesCles = array_keys($lesMoisClotures);
+			$moisASelectionner = $lesCles[0];
+			include("vues/v_listePaiement.php");
+		}
 		break;
 	}
 }

@@ -90,7 +90,7 @@ class unePersonne
 		return $ligne;
 	}
 
-    public static function get_IdVisiteurByNom($unNom) {
+    public static function get_visiteurByNom($unNom) {
         try {
             $cnx = Database::get_monPdo();
             $req = $cnx->prepare("select * from visiteur where nom like :nom");

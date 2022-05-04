@@ -1,17 +1,20 @@
 <?php
 class Database
 {
+	private static $bdd='mysql:dbname=gsb_fraislisa'; 
+    //private static $serveur='host=192.168.0.15';
 	private static $serveur='mysql:host=localhost';
-    //private static $serveur='mysql:host=192.168.0.15';
-    private static $bdd='dbname=gsb_fraislisa';   		
+	private static $port='3333';  		
     private static $user='gsb';    		
-    private static $mdp='verT22+sLam10';	
+    private static $mdp='verT22+sLam10';
+	//private static $user='lisa';    		
+    //private static $mdp='********';		
 	private static $monPdo;
     private static $monPdoGsb=null;
 
     private function __construct()
     {
-    	Database::$monPdo = new PDO(Database::$serveur.';'.Database::$bdd, Database::$user, Database::$mdp); 
+    	Database::$monPdo = new PDO(Database::$bdd.';'.Database::$serveur.';'.Database::$port, Database::$user, Database::$mdp); 
 		Database::$monPdo->query("SET CHARACTER SET utf8");
 	}
 

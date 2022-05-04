@@ -1,9 +1,6 @@
 <?php
-//la classe DAO de l'objet fichedefrais qui chargera les frais forfait, les frais hors forfait
-class uneFichedefrais{
-    
+class uneFichedefrais {
     //Teste si un visiteur possède une fiche de frais pour le mois passé en argument
-	//du coup si il en a pas une faut la créer c'est ça ?
     public static function estPremierFraisMois($idVisiteur,$mois) {
 		$ok = false;
 		$req = "select count(*) as nblignesfrais from fichefrais 
@@ -16,13 +13,7 @@ class uneFichedefrais{
 		return $ok;
 	}
 
-	public static function creeUneFichedefrais() {
-		//on utilisera le insert into
-
-	}
-
     //Crée une nouvelle fiche de frais et les lignes de frais au forfait pour un visiteur et un mois donnés
-	//a faire en objet
     public static function creeNouvellesLignesFrais($idVisiteur,$mois) {
 		$dernierMois = self::dernierMoisSaisi($idVisiteur);
 		$laDerniereFiche = self::getLesInfosFicheFrais($idVisiteur,$dernierMois);

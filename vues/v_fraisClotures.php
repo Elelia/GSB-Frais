@@ -11,7 +11,7 @@
   	   <caption>Eléments forfaitisés </caption>
         <tr>
          <?php
-         foreach ( $tabLeFraisForfait as $unFraisForfait ) 
+         foreach ($tabLeFraisForfait as $unFraisForfait) 
 		 {
 			$libelle = $unFraisForfait->get_libelleFraisForfait();
 		?>	
@@ -22,7 +22,7 @@
 		</tr>
         <tr>
         <?php
-          foreach (  $tabLesFraisForfait as $unFraisForfait  ) 
+          foreach ( $tabLesFraisForfait as $unFraisForfait) 
 		  {
 				$quantite = $unFraisForfait->get_quantiteLigneFraisForfait();
 		?>
@@ -41,11 +41,12 @@
                 <th class='montant'>Montant</th>                
              </tr>
         <?php      
-          foreach ( $lesFraisHorsForfait as $unFraisHorsForfait ) 
+          foreach ($tabLesFraisHorsForfait as $unFraisHorsForfait) 
 		  {
-			$date = $unFraisHorsForfait['date'];
-			$libelle = $unFraisHorsForfait['libelle'];
-			$montant = $unFraisHorsForfait['montant'];
+        $date = $unFraisHorsForfait->get_dateFraisHorsForfait();
+        $libelle = $unFraisHorsForfait->get_libelleFraisHorsForfait();
+        $montant = $unFraisHorsForfait->get_montantFraisHorsForfait();
+        $id = $unFraisHorsForfait->get_idFraisHorsForfait();
 		?>
              <tr>
                 <td><?php echo $date ?></td>
@@ -60,7 +61,6 @@
       <p>
         <input id="Id" name="idVisiteur" type="hidden" value="<?php echo $lesInfosFicheFrais['idVisiteur'] ?>">
         <input id="mois" name="moisFiche" type="hidden" value="<?php echo $lesInfosFicheFrais['mois'] ?>">
-        <!-- me faut aussi récupérer l'id de l'utilisateur, ou tout récupérer ? a voir mais voilà déjà ça c'est fait MERCI TONY   -->
         <input id="valider" type="submit" value="Valider le remboursement" size="20" />
       </p> 
       </div>
