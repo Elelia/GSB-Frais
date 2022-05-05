@@ -200,8 +200,8 @@ class uneFichedefrais {
 
 	//Retourne les informations d'une fiche de frais d'un visiteur pour un mois donné
 	public static function getLesInfosFicheFrais($idVisiteur,$mois){
-		$req = "select ficheFrais.idVisiteur as idVisiteur, ficheFrais.mois as mois, ficheFrais.idEtat as idEtat, ficheFrais.dateModif as dateModif, ficheFrais.nbJustificatifs as nbJustificatifs, 
-			ficheFrais.montantValide as montantValide, etat.libelle as libEtat from  fichefrais inner join Etat on ficheFrais.idEtat = Etat.id 
+		$req = "select fichefrais.idVisiteur as idVisiteur, fichefrais.mois as mois, fichefrais.idEtat as idEtat, fichefrais.dateModif as dateModif, fichefrais.nbJustificatifs as nbJustificatifs, 
+			fichefrais.montantValide as montantValide, etat.libelle as libEtat from  fichefrais inner join etat on fichefrais.idEtat = etat.id 
 			where fichefrais.idvisiteur ='$idVisiteur' and fichefrais.mois = '$mois'";
 		$res = Database::get_monPdo()->query($req);
 		$laLigne = $res->fetch();
@@ -210,12 +210,18 @@ class uneFichedefrais {
 
 	//me faut une fonction qui retourne la fiche de frais pour l'idvisiteur et le mois sélectionné et avec l'état clôturé
 	public static function getLesInfosFraisValide($idVisiteur,$mois) {
-		$req = "select ficheFrais.idVisiteur as idVisiteur, ficheFrais.mois as mois, ficheFrais.idEtat as idEtat, ficheFrais.dateModif as dateModif, ficheFrais.nbJustificatifs as nbJustificatifs, 
-			ficheFrais.montantValide as montantValide, etat.libelle as libEtat from  fichefrais inner join Etat on ficheFrais.idEtat = Etat.id 
-			where fichefrais.idvisiteur ='$idVisiteur' and fichefrais.mois = '$mois' and fichefrais.idEtat = 'CL'";
-		$res = Database::get_monPdo()->query($req);
-		$laLigne = $res->fetch();
-		return $laLigne;
+		try {
+			$cnx = Database::get_monPdo();
+			$req = $cnx->prepare("select fichefrais.idVisiteur as idVisiteur, fichefrais.mois as mois, fichefrais.idEtat as idEtat, fichefrais.dateModif as dateModif, fichefrais.nbJustificatifs as nbJustificatifs, 
+			fichefrais.montantValide as montantValide, etat.libelle as libEtat from  fichefrais inner join etat on fichefrais.idEtat = etat.id 
+			where fichefrais.idvisiteur ='$idVisiteur' and fichefrais.mois = '$mois' and fichefrais.idEtat = 'CL'");
+			$req->execute();
+			$resultat = $req->fetch(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+            print "Erreur !: " . $e->getMessage();
+            die();
+        }
+        return $resultat;
 	}
 
 	//met à jour l'état d'une fiche de frais

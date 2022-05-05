@@ -55,7 +55,7 @@
                 <th class='action' colspan="2">Action</th>                
              </tr>
         <?php      
-          foreach ( $tabLesFraisHorsForfait as $unFraisHorsForfait ) 
+          foreach ($tabLesFraisHorsForfait as $unFraisHorsForfait ) 
 		  {
 			$date = $unFraisHorsForfait->get_dateFraisHorsForfait();
 			$libelle = $unFraisHorsForfait->get_libelleFraisHorsForfait();

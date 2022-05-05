@@ -14,7 +14,7 @@
 			  ?>
 				<p>
 					<label for="idFrais"><?php echo $libelle ?></label>
-					<input type="text" id="idFrais" name="lesFrais[<?php echo $idFrais?>]" size="10" maxlength="5" value="<?php echo $quantite?>" >
+					<input type="text" id="idFrais" name="lesFrais['$idFrais']" size="10" maxlength="5" value="<?php echo $quantite?>" >
 				</p>
 			  <?php
 				  }

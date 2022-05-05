@@ -31,9 +31,11 @@ switch($action) {
         $visiteurASelectionner=$clesVi[0];
 
         $date=substr(date("Ymd"),0,6);
+        var_dump($date);
         $lesMois=uneFichedefrais::getLesMoisDisponiblesComptable($date);
         $lesClesMois = array_keys($lesMois);
         $moisASelectionner = $lesClesMois[0];
+        $_SESSION['lesVisiteurs'] = $tabLesVisiteurs;
 		include("vues/v_listeAValider.php");
 		break;
 	}
@@ -41,19 +43,16 @@ switch($action) {
         //on récupère le mois et le visiteur sélectionné
         $leMois = $_REQUEST['lstMois']; 
         $nomVisiteur = $_REQUEST['lstVisiteur'];
+        $tabLesVisiteurs = $_SESSION['lesVisiteurs'];
+
         $date=substr(date("Ymd"),0,6);
         $lesMois=uneFichedefrais::getLesMoisDisponiblesComptable($date);
 		$moisASelectionner = $leMois;
         $role="v";
-        $lesVisiteurs=unePersonne::getVisiteurByRole($role);
-        $tabLesVisiteurs=new arrayObject();
-        foreach($lesVisiteurs as $unVisiteur) {
-            $tabLesVisiteurs->append(new Personne($unVisiteur["id"],$unVisiteur["nom"],$unVisiteur["prenom"],$unVisiteur['login'], $unVisiteur['mdp'], $unVisiteur["role"]));
-        }
-        $infosV=unePersonne::get_IdVisiteurByNom($nomVisiteur);
+        $infosV=unePersonne::get_visiteurByNom($nomVisiteur);
         $leVisiteur = new Personne($infosV['id'],$infosV['nom'],$infosV['prenom'],$infosV['login'],$infosV['mdp'],$infosV['role']);
         $idVisiteur = $leVisiteur->get_id();
-        $visiteurASelectionner=$leVisiteur->get_nom();
+        $visiteurASelectionner = $leVisiteur->get_nom();
         //faire pareil pour le mois
         include("vues/v_listeAValider.php");
 
@@ -178,8 +177,8 @@ switch($action) {
         $idVisiteur = $leVisiteur->get_id();
         $leMois = $leMois = $laFicheDeFrais->get_moisFiche();
         $etat='VA';
-        $laFichedeFrais->set_idEtatFiche($etat);
-        uneFichedefrais::majEtatFicheFrais($idVisiteur,$leMois,$etat);
+        $laFicheDeFrais->set_idEtatFiche($etat);
+        //uneFichedefrais::majEtatFicheFrais($idVisiteur,$leMois,$etat);
         echo 'La fiche a été validée !';
 
         //on récupère les données pour afficher le menu déroulant
@@ -258,6 +257,7 @@ switch($action) {
             $moisUpdate=$numAnnee.$nouveauMois;
         }
 
+        var_dump($moisUpdate);
         //on utilise la méthode pour reporter la fiche de frais au mois suivant
         //uneFichedefrais::reporterFraisHorsForfait($idSelect,$moisUpdate);
         echo ("Le frais a bien été reporté ! ");

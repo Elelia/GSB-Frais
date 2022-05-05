@@ -42,7 +42,7 @@ switch($action){
 		}
 	  break;
 	}
-	case 'validerCreationFrais': { //ah en fait c'est pour les frais hors forfait
+	case 'validerCreationFrais': {
 		$dateFrais = $_REQUEST['dateFrais'];
 		$libelle = $_REQUEST['libelle'];
 		$montant = $_REQUEST['montant'];
@@ -61,8 +61,9 @@ switch($action){
 		break;
 	}
 }
+
 $lesFraisHorsForfait = uneFichedefrais::getLesFraisHorsForfait($idVisiteur,$mois);
-$lesFraisForfait= uneFichedefrais::getLesFraisForfait($idVisiteur,$mois); //ici c'est les tableaux en gros
+$lesFraisForfait= uneFichedefrais::getLesFraisForfait($idVisiteur,$mois);
 include("vues/v_listeFraisForfait.php");
 include("vues/v_listeFraisHorsForfait.php");
 ?>
