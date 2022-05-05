@@ -14,7 +14,7 @@ class Database
 
     private function __construct()
     {
-    	Database::$monPdo = new PDO('mysql:host=localhost;mysql:dbname=gsb_fraislisa;3333, gsb, verT22+sLam10'); 
+    	Database::$monPdo = new PDO('mysql:host=localhost;port=3333;dbname=gsb_fraislisa', 'gsb', 'verT22+sLam10'); 
 		Database::$monPdo->query("SET CHARACTER SET utf8");
 	}
 
