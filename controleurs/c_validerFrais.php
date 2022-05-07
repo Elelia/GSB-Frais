@@ -257,7 +257,6 @@ switch($action) {
             $moisUpdate=$numAnnee.$nouveauMois;
         }
 
-        var_dump($moisUpdate);
         //on utilise la méthode pour reporter la fiche de frais au mois suivant
         //uneFichedefrais::reporterFraisHorsForfait($idSelect,$moisUpdate);
         echo ("Le frais a bien été reporté ! ");
