@@ -225,8 +225,8 @@ class uneFichedefrais {
 	}
 
 	//met à jour l'état d'une fiche de frais
-	public static function majEtatFicheFrais($idVisiteur,$mois,$etat) {
-		$req = "update ficheFrais set idEtat = '$etat', dateModif = now() 
+	public static function majFicheFrais($idVisiteur,$mois,$etat,$montantValide) {
+		$req = "update ficheFrais set idEtat = '$etat', dateModif = now(), montantValide = $montantValide 
 		where fichefrais.idvisiteur ='$idVisiteur' and fichefrais.mois = '$mois'";
 		Database::get_monPdo()->exec($req);
 	}

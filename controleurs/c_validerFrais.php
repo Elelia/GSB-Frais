@@ -26,15 +26,8 @@ switch($action) {
         foreach($lesVisiteurs as $unVisiteur) {
             $tabLesVisiteurs->append(new Personne($unVisiteur["id"],$unVisiteur["nom"],$unVisiteur["prenom"],$unVisiteur['login'], $unVisiteur['mdp'], $unVisiteur["role"]));
         }
-        $lesCles=array_keys($lesVisiteurs);
-        $clesVi=array_keys((array)$tabLesVisiteurs);
-        $visiteurASelectionner=$clesVi[0];
-
         $date=substr(date("Ymd"),0,6);
-        var_dump($date);
         $lesMois=uneFichedefrais::getLesMoisDisponiblesComptable($date);
-        $lesClesMois = array_keys($lesMois);
-        $moisASelectionner = $lesClesMois[0];
         $_SESSION['lesVisiteurs'] = $tabLesVisiteurs;
 		include("vues/v_listeAValider.php");
 		break;
@@ -101,7 +94,7 @@ switch($action) {
             $dateModif =  $laFicheDeFrais->get_dateModifFiche();
             $dateModif =  dateAnglaisVersFrancais($dateModif);
             
-            //sotckage des objets dans la varible SESSION
+            //stockage des objets dans la varible SESSION
             $_SESSION['lesFrais'] = $tabLesFraisForfait;
             $_SESSION['fraisHorsForfait'] = $tabLesFraisHorsForfait;
             $_SESSION['leFrais'] = $tabLeFraisForfait;
@@ -175,10 +168,11 @@ switch($action) {
         $tabLesVisiteurs = $_SESSION['lesVisiteurs'];
         $laFicheDeFrais = $_SESSION['laFiche'];
         $idVisiteur = $leVisiteur->get_id();
-        $leMois = $leMois = $laFicheDeFrais->get_moisFiche();
+        $leMois = $laFicheDeFrais->get_moisFiche();
+        $montantValide = $laFicheDeFrais->get_montantValideFiche();
         $etat='VA';
         $laFicheDeFrais->set_idEtatFiche($etat);
-        //uneFichedefrais::majEtatFicheFrais($idVisiteur,$leMois,$etat);
+        //uneFichedefrais::majEtatFicheFrais($idVisiteur,$leMois,$etat,$montantValide);
         echo 'La fiche a été validée !';
 
         //on récupère les données pour afficher le menu déroulant
