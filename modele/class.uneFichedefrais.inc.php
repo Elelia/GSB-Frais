@@ -18,7 +18,7 @@ class uneFichedefrais {
 		$dernierMois = self::dernierMoisSaisi($idVisiteur);
 		$laDerniereFiche = self::getLesInfosFicheFrais($idVisiteur,$dernierMois);
 		if($laDerniereFiche['idEtat']=='CR'){
-				self::majEtatFicheFrais($idVisiteur, $dernierMois,'CL');
+			self::majEtatFicheFrais($idVisiteur, $dernierMois,'CL');
 		}
 		$req = "insert into fichefrais(idvisiteur,mois,nbJustificatifs,montantValide,dateModif,idEtat) 
 		values('$idVisiteur','$mois',0,0,now(),'CR')";
@@ -273,6 +273,12 @@ class uneFichedefrais {
 		$lesLignes = $res->fetchAll();
 		return $lesLignes;
     }
+
+	public function majEtatFicheFrais($idVisiteur,$mois,$etat){
+		$req = "update ficheFrais set idEtat = '$etat', dateModif = now() 
+		where fichefrais.idvisiteur ='$idVisiteur' and fichefrais.mois = '$mois'";
+		$res = Database::get_monPdo()->exec($req);
+	}
 }
 
 ?>

@@ -31,8 +31,9 @@ switch($action){
 		}
 		break;
 	}
-	case 'validerMajFraisForfait':{
+	case 'validerMajFraisForfait': {
 		$lesFrais = $_REQUEST['lesFrais'];
+		var_dump($lesFrais);
 		if(lesQteFraisValides($lesFrais)){
 			uneFichedefrais::majFraisForfait($idVisiteur,$mois,$lesFrais);
 		}
@@ -40,7 +41,7 @@ switch($action){
 			ajouterErreur("Les valeurs des frais doivent être numériques");
 			include("vues/v_erreurs.php");
 		}
-	  break;
+		break;
 	}
 	case 'validerCreationFrais': {
 		$dateFrais = $_REQUEST['dateFrais'];
